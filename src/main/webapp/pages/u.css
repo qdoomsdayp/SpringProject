@@ -1,0 +1,31 @@
+.UP {
+    margin: 0 auto;
+    width: 400px;
+}
+
+.block1, .block2 {
+    display: inline-block;
+    float: left;
+}
+
+.main {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+/*.block2 {
+    padding-bottom: 90px;
+}*/
+
+.rows:hover {
+    background-color: antiquewhite;
+}
+
+.table1 {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: gold;
+}
