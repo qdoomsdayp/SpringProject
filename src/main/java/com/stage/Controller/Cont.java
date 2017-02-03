@@ -104,11 +104,11 @@ public class Cont {
 
     public List<Role> allRole() throws SQLException {
         List<Role> listRoles = new ArrayList<>();
-        PreparedStatement preparedStatement1 = conn.prepareStatement("select * from usersandrolls.rolls");
+        PreparedStatement preparedStatement1 = conn.prepareStatement("select * from usersandroles.roles");
         ResultSet resultSet = preparedStatement1.executeQuery();
         while (resultSet.next()) {
-            listRoles.add(new Role(resultSet.getString("id_roll"),
-                    resultSet.getString("name")));
+            listRoles.add(new Role(resultSet.getString("idR"),
+                    resultSet.getString("nameR")));
         }
         return listRoles;
     }
@@ -116,14 +116,14 @@ public class Cont {
     public List<User> allUsers() throws SQLException {
         List<User> listUsers = new ArrayList<>();
 
-        PreparedStatement preparedStatement = conn.prepareStatement("select * from usersandrolls.users");
+        PreparedStatement preparedStatement = conn.prepareStatement("select * from usersandroles.users");
         ResultSet resultSet = preparedStatement.executeQuery();
         String str = "";
         while (resultSet.next()) {
-            listUsers.add(new User(resultSet.getString("id_users"),
-                    resultSet.getString("name"),
-                    resultSet.getString("email"),
-                    resultSet.getString("id_roll")));
+            listUsers.add(new User(resultSet.getString("idU"),
+                    resultSet.getString("nameU"),
+                    resultSet.getString("emailU"),
+                    resultSet.getString("idR")));
         }
         return listUsers;
     }
@@ -132,8 +132,8 @@ public class Cont {
         String name = us.getName();
         String email = us.getEmail();
         int idrole = Integer.parseInt(us.getIdrole());
-        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO usersandrolls.users " +
-                "(name,email,id_roll) VALUES (?,?,?)");
+        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO usersandroles.users " +
+                "(nameU,emailU,idR) VALUES (?,?,?)");
         preparedStatement.setString(1, name);
         preparedStatement.setString(2, email);
         preparedStatement.setInt(3, idrole);
@@ -144,7 +144,7 @@ public class Cont {
 
     public List<User> delete(User us) throws SQLException, IOException {
         int delet = Integer.parseInt(us.getId());
-        PreparedStatement preparedStatement = conn.prepareStatement("DELETE from usersandrolls.users  WHERE id_users = ?");
+        PreparedStatement preparedStatement = conn.prepareStatement("DELETE from usersandroles.users  WHERE idU = ?");
         preparedStatement.setInt(1, delet);
         preparedStatement.executeUpdate();
         return allUsers();
@@ -155,7 +155,7 @@ public class Cont {
         String name = us.getName();
         String email = us.getEmail();
         int idrole = Integer.parseInt(us.getIdrole());
-        PreparedStatement preparedStatement = conn.prepareStatement("UPDATE usersandrolls.users SET name =?,email = ?,id_roll = ? WHERE id_users = " + edit);
+        PreparedStatement preparedStatement = conn.prepareStatement("UPDATE usersandroles.users SET nameU =?,emailU = ?,idR = ? WHERE idU = " + edit);
         preparedStatement.setString(1, name);
         preparedStatement.setString(2, email);
         preparedStatement.setInt(3, idrole);
@@ -166,19 +166,19 @@ public class Cont {
 
     public Role selectListR(Role role) throws IOException, SQLException {
         String idR = role.getIdR();
-        PreparedStatement preparedStatement1 = conn.prepareStatement("SELECT * FROM usersandrolls.rolls " +
-                "WHERE id_roll = " + "\"" + idR + "\"");
+        PreparedStatement preparedStatement1 = conn.prepareStatement("SELECT * FROM usersandroles.roles " +
+                "WHERE idR = " + "\"" + idR + "\"");
         ResultSet resultSet = preparedStatement1.executeQuery();
         resultSet.next();
 
         role.setIdR(idR);
-        role.setNameR(resultSet.getString("name"));
+        role.setNameR(resultSet.getString("nameR"));
         return role;
     }
 
     public List<Role> deleteR(Role role) throws SQLException, IOException {
         String delet = role.getIdR();
-        PreparedStatement preparedStatement = conn.prepareStatement("DELETE from usersandrolls.rolls  WHERE id_roll = ?");
+        PreparedStatement preparedStatement = conn.prepareStatement("DELETE from usersandroles.roles  WHERE idR = ?");
         preparedStatement.setString(1, delet);
         preparedStatement.executeUpdate();
         return allRole();
@@ -188,7 +188,7 @@ public class Cont {
     public List<Role> editR(Role role) throws SQLException, IOException {
         String edit = role.getIdR();
         String name = role.getNameR();
-        PreparedStatement preparedStatement = conn.prepareStatement("UPDATE usersandrolls.rolls SET name =? WHERE id_roll = ?");
+        PreparedStatement preparedStatement = conn.prepareStatement("UPDATE usersandroles.roles SET nameR =? WHERE idR = ?");
         preparedStatement.setString(1, name);
         preparedStatement.setString(2, edit);
         preparedStatement.executeUpdate();
@@ -198,8 +198,8 @@ public class Cont {
 
     public List<Role> addR(Role role) throws SQLException, IOException {
         String name = role.getNameR();
-        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO usersandrolls.rolls " +
-                "(name) VALUES (?)");
+        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO usersandroles.roles " +
+                "(nameR) VALUES (?)");
         preparedStatement.setString(1, name);
         preparedStatement.executeUpdate();
 
